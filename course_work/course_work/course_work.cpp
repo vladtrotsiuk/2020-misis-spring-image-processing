@@ -10,9 +10,15 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	String imname;
+	cout << "Input image file name: ";
+	cin >> imname;
+	cout << "Input pattern file name: ";
+	String tmpltname;
+	cin >> tmpltname;
 	//считываем изображения и шаблон, переводим их в серый цвет
 	int flags = IMREAD_GRAYSCALE;
-	Mat image = imread("img.jpg");
+	Mat image = imread(imname);
 	Mat gray;
 	int elem;
 	cout << "1 - home" << endl << "2 - search" << endl;
@@ -40,7 +46,7 @@ int main(int argc, char* argv[])
 	int w = gray.cols;
 
 
-	Mat tmplte = imread("tmplt1.png", flags);
+	Mat tmplte = imread(tmpltname, flags);
 	if (tmplte.data == NULL)
 	{
 		printf("pattern cannot be loaded\n");
@@ -91,7 +97,7 @@ int main(int argc, char* argv[])
 	Point pt1(startX, startY);
 	Point pt2(endX, endY);
 	//строим прямоугольник вокруг шаблона
-	rectangle(image, pt1, pt2, (255, 0, 255), 4);
+	rectangle(image, pt1, pt2, (0, 0, 255), 4);
 	int pl = image.cols / 5;
 	int pw = image.rows;
 	Point pt3((elem - 1) * pl + 1, pw - 95);
