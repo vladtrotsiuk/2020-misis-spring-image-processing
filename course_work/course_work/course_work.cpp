@@ -3,21 +3,29 @@
 #include <iostream>
 #include <opencv2\core.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
+#include <cmath>
 
 using namespace cv;
-using namespace std; 
-
+using namespace std;
 
 int main(int argc, char* argv[])
 {
 	//считываем изображения и шаблон, переводим их в серый цвет
 	int flags = IMREAD_GRAYSCALE;
-	Mat image = imread("img5.jpg");
+	Mat image = imread("img3.jpg");
 	Mat gray;
-	
+	int elem;
+	cout << "1 - home" << endl << "2 - search" << endl;
+	cout << "3 - add photo" << endl << "4 - liked photos" << endl << "5 - My profile" << endl;
+	cout << "Input number of element of interface: ";
+	cin >> elem;
+	while (elem < 1 || elem > 5) {
+		cout << "Input number from 1 to 5: ";
+		cin >> elem;
+	}
 	if (image.data == NULL)
 	{
-		printf("file cannot be loaded\n");
+		printf("image cannot be loaded\n");
 		return 1;
 	}
 
@@ -32,7 +40,12 @@ int main(int argc, char* argv[])
 	int w = gray.cols;
 
 
-	Mat tmplte = imread("tmplt1.png", flags);
+	Mat tmplte = imread("tmplt4.png", flags);
+	if (tmplte.data == NULL)
+	{
+		printf("pattern cannot be loaded\n");
+		return 1;
+	}
 	int tw = tmplte.rows;
 	int th = tmplte.cols;
 	Canny(tmplte, tmplte, 50, 200);
@@ -49,11 +62,11 @@ int main(int argc, char* argv[])
 
 		resize(image, resized, Size(w * i, h * i));
 		float r = gray.cols / resized.cols;
-		if ((resized.rows < th)||(resized.cols < tw)) {
+		if ((resized.rows < th) || (resized.cols < tw)) {
 			break;
 		}
 		Canny(resized, edged, 50, 200);
-		matchTemplate(edged,tmplte,result, TM_CCOEFF);
+		matchTemplate(edged, tmplte, result, TM_CCOEFF_NORMED);
 
 		double minVal;
 		double maxVal;
@@ -66,20 +79,38 @@ int main(int argc, char* argv[])
 			found1 = maxIdx;
 			found2 = r;
 		}
-		
+
 	}
 
 
-	int startX = found1.x*found2;
+	int startX = found1.x * found2;
 	int startY = found1.y * found2;
-	
-	int endX = (found1.x + th)* found2;
+
+	int endX = (found1.x + th) * found2;
 	int endY = (found1.y + tw) * found2;
 	Point pt1(startX, startY);
 	Point pt2(endX, endY);
 	//строим прямоугольник вокруг шаблона
-	rectangle(image, pt1, pt2, (0, 0, 255), 2);
-	imshow("My",image);
+	rectangle(image, pt1, pt2, (0, 0, 255), 4);
+	int pl = image.cols / 5;
+	int pw = image.rows;
+	Point pt3((elem - 1) * pl + 1, pw - 95);
+	Point pt4((elem - 1) * pl + 1, pw);
+	Point pt5((elem - 1) * pl + 1, pw - 95);
+	Point pt6(elem * pl + 1, pw - 95);
+	Point pt7(elem * pl + 1, pw - 95);
+	Point pt8(elem * pl + 1, pw);
+	line(image, pt3, pt4, (0, 0, 255), 2);
+	line(image, pt5, pt6, (0, 0, 255), 2);
+	line(image, pt7, pt8, (0, 0, 255), 2);
+	if (pt1.x > pt3.x && pt1.x < pt7.x && pt1.y > pt5.y && pt1.y<1300 && abs(pt1.x - pt2.x)>pl / 4 && abs(pt1.y - pt2.y) > pl / 4) {
+		cout << "pattern found";
+	}
+	else {
+		cout << "pattern not found" << endl;
+	}
+
+	imshow("My", image);
 	waitKey(0);
 
 	return 0;
