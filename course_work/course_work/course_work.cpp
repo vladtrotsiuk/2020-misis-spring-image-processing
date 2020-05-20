@@ -4,6 +4,7 @@
 #include <opencv2\core.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
 #include <cmath>
+#include "markup.cpp"
 
 using namespace cv;
 using namespace std;
@@ -13,7 +14,9 @@ int main(int argc, char* argv[])
 	String imname;
 	cout << "Input image file name: ";
 	cin >> imname;
-	cout << "Input pattern file name: ";
+	cout << "1 - home" << endl << "2 - search" << endl;
+	cout << "3 - add photo" << endl << "4 - liked photos" << endl << "5 - My profile" << endl;
+	cout << "Input pattern number(from 1 to 5): ";
 	String tmpltname;
 	cin >> tmpltname;
 	//считываем изображения и шаблон, переводим их в серый цвет
@@ -21,13 +24,12 @@ int main(int argc, char* argv[])
 	Mat image = imread(imname);
 	Mat gray;
 	int elem;
-	cout << "1 - home" << endl << "2 - search" << endl;
-	cout << "3 - add photo" << endl << "4 - liked photos" << endl << "5 - My profile" << endl;
-	cout << "Input number of element of interface: ";
-	cin >> elem;
+
+	elem = stoi(tmpltname);
 	while (elem < 1 || elem > 5) {
 		cout << "Input number from 1 to 5: ";
-		cin >> elem;
+		cin >> tmpltname;
+		elem = stoi(tmpltname);
 	}
 	if (image.data == NULL)
 	{
@@ -46,7 +48,7 @@ int main(int argc, char* argv[])
 	int w = gray.cols;
 
 
-	Mat tmplte = imread(tmpltname, flags);
+	Mat tmplte = imread(tmpltname + ".png", flags);
 	if (tmplte.data == NULL)
 	{
 		printf("pattern cannot be loaded\n");
