@@ -98,23 +98,8 @@ int main(int argc, char* argv[])
 	Point pt2(endX, endY);
 	//строим прямоугольник вокруг шаблона
 	rectangle(image, pt1, pt2, (0, 0, 255), 4);
-	int pl = image.cols / 5;
-	int pw = image.rows;
-	Point pt3((elem - 1) * pl + 1, pw - 95);
-	Point pt4((elem - 1) * pl + 1, pw);
-	Point pt5((elem - 1) * pl + 1, pw - 95);
-	Point pt6(elem * pl + 1, pw - 95);
-	Point pt7(elem * pl + 1, pw - 95);
-	Point pt8(elem * pl + 1, pw);
-	line(image, pt3, pt4, (0, 0, 255), 2);
-	line(image, pt5, pt6, (0, 0, 255), 2);
-	line(image, pt7, pt8, (0, 0, 255), 2);
-	if (pt1.x > pt3.x && pt1.x < pt7.x && pt1.y > pt5.y && pt1.y<1300 && abs(pt1.x - pt2.x)>pl / 4 && abs(pt1.y - pt2.y) > pl / 4) {
-		cout << "pattern found";
-	}
-	else {
-		cout << "pattern not found" << endl;
-	}
+	//проверяем, находится ли прямоугольник в нужном участке разметки
+	markup(image, elem, pt1, pt2);
 
 	imshow("My", image);
 	waitKey(0);
