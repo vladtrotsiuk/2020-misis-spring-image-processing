@@ -21,10 +21,10 @@ void markup(Mat image, int elem, Point pt1, Point pt2) {
 	//line(image, pt5, pt6, (0, 0, 255), 2);
 	//line(image, pt7, pt8, (0, 0, 255), 2);
 	if (pt1.x > pt3.x && pt1.x < pt7.x && pt1.y > pt5.y && pt1.y<1300 && abs(pt1.x - pt2.x)>pl / 4 && abs(pt1.y - pt2.y) > pl / 4) {
-		cout << "pattern found";
+		cout << "pattern found correctly";
 	}
 	else {
-		cout << "pattern not found" << std::endl;
+		cout << "wrong pattern found" << std::endl;
 	}
 }
 
