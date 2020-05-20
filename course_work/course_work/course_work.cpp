@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	int w = gray.cols;
 
 
-	Mat tmplte = imread(tmpltname + ".png", flags);
+	Mat tmplte = imread("tmplt" + tmpltname + ".png", flags);
 	if (tmplte.data == NULL)
 	{
 		printf("pattern cannot be loaded\n");
