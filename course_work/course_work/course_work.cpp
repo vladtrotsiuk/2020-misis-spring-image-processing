@@ -4,7 +4,7 @@
 #include <opencv2\core.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
 #include <cmath>
-#include "markup.cpp"
+#include <fstream>
 
 using namespace cv;
 using namespace std;
@@ -101,8 +101,11 @@ int main(int argc, char* argv[])
 	//строим прямоугольник вокруг шаблона
 	rectangle(image, pt1, pt2, (0, 0, 255), 4);
 	//проверяем, находится ли прямоугольник в нужном участке разметки
-	markup(image, elem, pt1, pt2);
+	//markup(image, elem, pt1, pt2);
 
+	ofstream fout(imname.substr(0, imname.length() - 4) + "_info.txt");
+	fout << elem << endl << pt1.x << endl << pt1.y << endl << pt2.x << endl << pt2.y;
+	fout.close();
 	imshow("My", image);
 	waitKey(0);
 
